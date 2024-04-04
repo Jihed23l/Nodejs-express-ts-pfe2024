@@ -1,5 +1,6 @@
 import {Request , Response} from 'express'
 import Todo, { ITodo } from '../database/models/Todo'
+import APIFeatures from '../helpers/apiFeatures'
 
 export const createTodo = async (req:Request,res:Response): Promise<void>=>{
     try{
@@ -75,6 +76,35 @@ export const deleteOneTodoById= async (req:Request,res:Response):Promise<void>=>
     catch(error){
         res.status(400).json({
             error: '❌ ERROR HAPPEN AT DELETE ONE TODO BY ID!!! ❌ '
+        })
+    }
+}
+
+export const getAllTodos = async(req:Request,res:Response):Promise<void>=>{
+    try{
+        const {page = 1 ,limit = 10}=req.query
+        const options={
+            page:parseInt(page as string),
+            limit:parseInt(limit as string)
+        }
+
+        let findAllQuery = Todo.find()
+
+        const features = new APIFeatures(
+            findAllQuery,
+            req.query
+        )
+        .filter()
+        .sort()
+        .limitFields()
+        .search(['title','description'])
+
+        const paginatedTodos = await Todo.paginate(features?.query,options)
+        res.status(200).json({message:'All todos returned successfully',paginatedTodos})
+    }
+    catch(err){
+        res.status(400).json({
+            error: '❌ ERROR HAPPEN AT GET ALL TODOS !!! ❌ '
         })
     }
 }

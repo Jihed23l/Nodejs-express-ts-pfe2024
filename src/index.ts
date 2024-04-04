@@ -2,6 +2,7 @@ import express , {Express , Request ,Response}  from 'express'
 import dotenv from 'dotenv'
 import './database'
 import todoRoutes from './routes/todoRoutes'
+import authRoutes from './routes/authRoutes'
 import bodyParser from 'body-parser'
 dotenv.config()
 
@@ -19,4 +20,5 @@ app.listen(port,()=>{
 })
 
 app.use(bodyParser.json())
+app.use('/v1/auth',authRoutes)
 app.use('/v1/api',todoRoutes)

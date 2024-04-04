@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTodo, deleteOneTodoById, getOneTodoById, updateOneTodoById } from "../controllers/todoController";
+import { createTodo, deleteOneTodoById, getAllTodos, getOneTodoById, updateOneTodoById } from "../controllers/todoController";
 import Joi from 'joi'
 import { validateSchema } from "../middlewares/validator";
 
@@ -19,6 +19,7 @@ const idSchema = Joi.string().regex(/^[0-9a-fA-F]{24}$/).message('invalid todo i
 const getOneTodoByIdSchema=Joi.object({ id : idSchema})
 
 router.post('/todos',validateSchema(createTodoSchema,'body'), createTodo)
+router.get('/todos',getAllTodos)
 
 router.get('/todos/:id', validateSchema(getOneTodoByIdSchema,'params'), getOneTodoById)
 
