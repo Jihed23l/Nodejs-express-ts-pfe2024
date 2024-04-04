@@ -24,6 +24,9 @@ const UserSchema : Schema = new Schema({
         required: true,
         select: false
     },
+    profilePictureUrl:{
+        type: String
+    }
 })
  
 UserSchema.plugin(mongoosePaginate)
