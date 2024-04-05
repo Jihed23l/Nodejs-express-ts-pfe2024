@@ -9,7 +9,8 @@ const router: Router = Router()
 const registerSchema=Joi.object({
     username:Joi.string().required(),
     email:Joi.string().email().required(),
-    password:Joi.string().required()
+    password:Joi.string().required(),
+    role:Joi.string().valid('user','admin')
 })
 
 const loginSchema = Joi.object({

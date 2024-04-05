@@ -20,6 +20,11 @@ const TodoSchema:Schema = new Schema({
         type: Boolean ,
         default: false
     },
+    createdBy:{
+        type: Schema.Types.ObjectId,
+        ref:'User',
+        required:true
+    },
     deletedAt:{
         type: Date,
         default: null

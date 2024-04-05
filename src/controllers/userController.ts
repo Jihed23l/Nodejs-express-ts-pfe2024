@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 
 export const registerUser = async (req:Request,res:Response)=>{
     try{
-        const {username,email,password} = req.body
+        const {username,email,password,role} = req.body
 
         const existingUser = await User.findOne({email})
         if (existingUser){
@@ -27,6 +27,7 @@ export const registerUser = async (req:Request,res:Response)=>{
         const newUser:IUser = new User({
             username,
             email,
+            role,
             password:hashedPassword,
             profilePictureUrl:req?.file?.filename
         })
@@ -61,7 +62,7 @@ export const loginUser = async (req:Request,res:Response)=>{
                 return res.status(400).json({error:'Invalid email or password'})
             }
 
-            const token = jwt.sign({ userId: user._id },'softyeducation' , { expiresIn: '5m' })
+            const token = jwt.sign({ userId: user._id },'softyeducation' , { expiresIn: '30m' })
 
             res.status(200).json({message:'Logged in successfully',token})
     }

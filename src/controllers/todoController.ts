@@ -1,15 +1,17 @@
 import {Request , Response} from 'express'
 import Todo, { ITodo } from '../database/models/Todo'
 import APIFeatures from '../helpers/apiFeatures'
+import { AuthRequest } from '../helpers/authMiddleware'
 
-export const createTodo = async (req:Request,res:Response): Promise<void>=>{
+export const createTodo = async (req:AuthRequest,res:Response): Promise<void>=>{
     try{
         console.log('WELCOME TO CREATE TODO CONTROLLER ')
         const {title,description}=req.body
         const newTodo :ITodo = new Todo(
             {
                 title,
-                description
+                description,
+                createdBy:req.userId
             }
         )
         const savedTodo:ITodo = await newTodo.save()
@@ -19,6 +21,7 @@ export const createTodo = async (req:Request,res:Response): Promise<void>=>{
         })
     }
     catch(error){
+        console.log(error)
         res.status(400).json({
             error: '❌ ERROR HAPPEN AT CREATE TODO!!! ❌ '
         })
@@ -28,11 +31,13 @@ export const createTodo = async (req:Request,res:Response): Promise<void>=>{
 export const getOneTodoById = async (req:Request,res:Response):Promise<void>=>{
         try{
             const {id}= req.params
-            const todo :ITodo | null= await Todo.findById(id)
+            const todo :ITodo | null= await Todo.findById(id).populate('createdBy')
+
             if (!todo){
                 res.status(404).json({error:'Todo not found! ❌'})
                 return
             }
+            
             res.status(200).json({message:'Todo returned successfully',todo})
         }
         catch(error){
@@ -105,6 +110,18 @@ export const getAllTodos = async(req:Request,res:Response):Promise<void>=>{
     catch(err){
         res.status(400).json({
             error: '❌ ERROR HAPPEN AT GET ALL TODOS !!! ❌ '
+        })
+    }
+}
+
+export const getMyTodos = async (req:AuthRequest , res:Response)=>{
+    try{
+        const mytodos= await Todo.find({createdBy:req.userId})
+        return res.status(200).json({message:'todos returned successfully',data:mytodos})
+    }
+    catch(err){
+        res.status(400).json({
+            error: '❌ ERROR HAPPEN AT GET MY TODOS !!! ❌ '
         })
     }
 }

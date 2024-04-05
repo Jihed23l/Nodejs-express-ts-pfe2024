@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { createTodo, deleteOneTodoById, getAllTodos, getOneTodoById, updateOneTodoById } from "../controllers/todoController";
+import { createTodo, deleteOneTodoById, getAllTodos, getMyTodos, getOneTodoById, updateOneTodoById } from "../controllers/todoController";
 import Joi from 'joi'
 import { validateSchema } from "../middlewares/validator";
+import {verifyToken } from "../helpers/authMiddleware";
 
 const router: Router = Router()
 
@@ -18,13 +19,16 @@ const updateTodoSchema=Joi.object({
 const idSchema = Joi.string().regex(/^[0-9a-fA-F]{24}$/).message('invalid todo id')
 const getOneTodoByIdSchema=Joi.object({ id : idSchema})
 
-router.post('/todos',validateSchema(createTodoSchema,'body'), createTodo)
-router.get('/todos',getAllTodos)
+router.post('/todos',verifyToken, validateSchema(createTodoSchema,'body'), createTodo)
 
-router.get('/todos/:id', validateSchema(getOneTodoByIdSchema,'params'), getOneTodoById)
+router.get('/todos',verifyToken,getAllTodos)
 
-router.put('/todos/:id', validateSchema(getOneTodoByIdSchema,'params'),
+router.get('/todos/my',verifyToken, getMyTodos)
+
+router.get('/todos/:id', verifyToken, validateSchema(getOneTodoByIdSchema,'params'), getOneTodoById)
+
+router.put('/todos/:id', verifyToken, validateSchema(getOneTodoByIdSchema,'params'),
           validateSchema(updateTodoSchema,'body'),updateOneTodoById)
 
-router.delete('/todos/:id',validateSchema(getOneTodoByIdSchema,'params'),deleteOneTodoById)        
+router.delete('/todos/:id',verifyToken, validateSchema(getOneTodoByIdSchema,'params'),deleteOneTodoById)        
 export default router
