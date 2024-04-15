@@ -1,0 +1,33 @@
+paths:
+  /v1/auth/login:
+    post:
+      tags:
+        - User
+      summary: Login
+      description: Returns user info and token.
+      requestBody:
+        description: Login
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: adminsofty@gmail.com
+                password:
+                  type: string
+                  example: softy123
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: message that developer can use
+                    example: "Logged in successfully"

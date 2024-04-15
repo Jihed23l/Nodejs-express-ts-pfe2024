@@ -1,0 +1,38 @@
+paths:
+  /v1/api/todos/{id}:
+    put:
+      security:
+        - BearerAuth: []
+      tags:
+        - Todo
+      summary: Update One todo by id
+      description: Update information of specific todo.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            description: todo id
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: message that developer can use
+                    example: "Todo Updated  successfully"
+                  todo:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        description: todo id
+                        example: 66101940c29a63d8c33880a9
+                      title:
+                        type: string
+                        description: todo title
+                        example: My First Todo

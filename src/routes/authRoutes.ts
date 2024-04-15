@@ -5,7 +5,6 @@ import Joi from 'joi'
 import { validateSchema } from "../middlewares/validator";
 
 const router: Router = Router()
-
 const registerSchema=Joi.object({
     username:Joi.string().required(),
     email:Joi.string().email().required(),

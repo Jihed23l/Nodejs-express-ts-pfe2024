@@ -1,0 +1,27 @@
+paths:
+  /v1/api/todos/{id}:
+    delete:
+      security:
+        - BearerAuth: []
+      tags:
+        - Todo
+      summary: Delete One todo by id
+      description: Delete information of specific todo.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            description: todo id
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: message that developer can use
+                    example: "Todo Deleted  successfully"
