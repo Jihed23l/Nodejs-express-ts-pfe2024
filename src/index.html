@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+    src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+    integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+    crossorigin="anonymous"
+  ></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css"/>
+</head>
+<body>
+    <div id="message-bar">
+        <p id="notification"></p>
+      </div>
+      <form class="container">
+        <h2>Send Messages with Socket.io</h2>
+        <textarea
+          rows="5"
+          width="100%"
+          name="message"
+          id="message"
+          placeholder="Enter your message..."
+        ></textarea>
+        <button>SEND MESSAGE</button>
+      </form>
+    <script src="./script.js" type="module"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
